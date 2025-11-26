@@ -5,11 +5,18 @@ import threading
 import time
 from pathlib import Path
 import tkinter as tk
-from tkinter import ttk
+from tkinter import filedialog, messagebox, ttk
 from datetime import timedelta
 
 """Buraya kopyalanmak istenen dosyanın uzantısı yazılacak"""
 SOURCE_PATH = Path(r"") 
+
+def select_source_folder():
+    """Kullanıcıdan kaynak klasörü seçmesini ister."""
+    root = tk.Tk()
+    root.withdraw()  # Ana pencereyi gizle
+    folder_selected = filedialog.askdirectory(title="Lütfen kaynak klasörü seçin")
+    return Path(folder_selected) if folder_selected else None
 
 tasks = {}
 
@@ -145,6 +152,15 @@ if __name__ == "__main__":
 
     ttk.Label(root, text="Takılan USB'lere otomatik klasör kopyalama",
               font=("Arial", 12, "bold")).pack(pady=10)
+
+    # Eğer SOURCE_PATH boşsa kullanıcıdan seçmesini iste
+    if not str(SOURCE_PATH) or str(SOURCE_PATH) == ".":
+        selected_path = select_source_folder()
+        if selected_path:
+            SOURCE_PATH = selected_path
+        else:
+            messagebox.showwarning("Uyarı", "Kaynak klasör seçilmedi. Program kapatılıyor.")
+            exit()
 
     monitor_usbs(root)
 
