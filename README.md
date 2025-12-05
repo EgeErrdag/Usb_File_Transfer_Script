@@ -51,4 +51,3 @@ If left empty, the script will prompt you to select a folder on startup.
 
 ## License
 
-This project is open source and available under the [MIT License](LICENSE).
